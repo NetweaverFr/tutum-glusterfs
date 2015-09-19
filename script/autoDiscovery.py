@@ -4,6 +4,9 @@ import subprocess
 import time
 from time import sleep
 
+command = ['glusterd']
+subprocess.Popen(command)
+
 while True:
     # Set variables
     # Service name
