@@ -35,7 +35,7 @@ while True:
             command = ['gluster', 'peer', 'status']
             statePeer = subprocess.Popen(command, stdout=subprocess.PIPE)
             # get the peer response with the peers IP
-            stdout = process.communicate()[0]
+            stdout = statePeer.communicate()[0]
 
             for container in containers:
                 peer = re.match(container.__getattribute__('private_ip'), stdout)
