@@ -14,7 +14,7 @@ RUN add-apt-repository ppa:gluster/glusterfs-3.7 && \
 RUN apt-get install -y glusterfs-server
 
 # Install Tutum API library
-RUN pip install python-tutum
+RUN pip install python-tutum daemonize
 
 # Add volume main directory
 RUN mkdir /data
