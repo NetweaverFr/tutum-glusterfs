@@ -24,12 +24,12 @@ while True:
     # Check result - we want only one service
     if services.__len__() == 1:
 
-        #preset command to create volume
-        commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', containers.__len__(), 'transport', 'tcp']
-
         service = services[0]
         # Get container list
         containers = tutum.Container.list(state = 'Running', serviceName = serviceName)
+
+        #preset command to create volume
+        commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', containers.__len__(), 'transport', 'tcp']
 
         # If we have more than one container running GlusterFs
         # We can create/update the cluster
