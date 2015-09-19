@@ -22,6 +22,5 @@ VOLUME ["/data"]
 
 ADD script/autoDiscovery.py script/autoDiscovery.py
 
-
 # Entry point / CMD
 CMD [ "python", "script/autoDiscovery.py"]

@@ -23,6 +23,10 @@ while True:
 
     # Check result - we want only one service
     if services.__len__() == 1:
+
+        #preset command to create volume
+        commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', containers.__len__(), 'transport', 'tcp']
+
         service = services[0]
         # Get container list
         containers = tutum.Container.list(state = 'Running', serviceName = serviceName)
@@ -30,7 +34,6 @@ while True:
         # If we have more than one container running GlusterFs
         # We can create/update the cluster
         if containers.__len__() > 1:
-
             # get peers informations
             command = ['gluster', 'peer', 'status']
             statePeer = subprocess.Popen(command, stdout=subprocess.PIPE)
@@ -39,6 +42,10 @@ while True:
 
             # Check each container
             for container in containers:
+
+                # Add container for volume creation
+                commandCreateVolume.append(container.__getattribute__('private_ip') + ':/data')
+
                 # Check if the container is not the same as the one who execute this script
                 if not re.search(container.__getattribute__('private_ip'), os.environ.get('TUTUM_IP_ADDRESS')):
                     # Search if the container is in the peer list
@@ -51,6 +58,9 @@ while True:
             # Check if a volume is set
             command = ['gluster', 'volume', 'info']
             stateVolume = subprocess.Popen(command)
+
+            commandCreateVolume.append('force')
+            createVolume = subprocess.Popen(commandCreateVolume)
 
     elif services.__len__() > 1:
         print "More than one service found for " + serviceName
