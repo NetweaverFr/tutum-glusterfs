@@ -38,7 +38,7 @@ while True:
             stdout = statePeer.communicate()[0]
 
             for container in containers:
-                peer = re.match(container.__getattribute__('private_ip'), stdout)
+                peer = re.search(container.__getattribute__('private_ip'), stdout)
 
                 if not peer:
                     command = ['gluster', 'peer', 'probe', container.__getattribute__('private_ip')]
