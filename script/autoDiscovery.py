@@ -35,10 +35,10 @@ while True:
             command = ['gluster', 'peer', 'status']
             statePeer = subprocess.Popen(command, stderr=subprocess.STDOUT)
             # get the peer response with the peers IP
-            out, err = statePeer.communicate()
+            stdout = statePeer.stdout.read()
 
             for container in containers:
-                peer = re.search(container.__getattribute__('private_ip'), out)
+                peer = re.match(container.__getattribute__('private_ip'), stdout)
 
                 if not peer:
                     command = ['gluster', 'peer', 'probe', container.__getattribute__('private_ip')]
@@ -54,5 +54,4 @@ while True:
         print "No service found - " + serviceName
 
     # List all container:
-
     sleep(20)
