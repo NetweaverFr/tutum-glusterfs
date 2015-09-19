@@ -4,7 +4,7 @@ RUN DEBIAN_FRONTEND=noninteractive
 
 # Update installation and install dependencies
 RUN apt-get update && apt-get upgrade -y && \
-		apt-get install -y python-software-properties software-properties-common, python-pip
+		apt-get install -y python-software-properties python-pip
 
 # Add GlusterFs 3.7 PPA
 RUN add-apt-repository ppa:gluster/glusterfs-3.7 && \
