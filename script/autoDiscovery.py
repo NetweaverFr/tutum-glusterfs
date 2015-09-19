@@ -37,12 +37,16 @@ while True:
             # get the peer response with the peers IP
             stdout = statePeer.communicate()[0]
 
+            # Check each container
             for container in containers:
-                peer = re.search(container.__getattribute__('private_ip'), stdout)
-
-                if not peer:
-                    command = ['gluster', 'peer', 'probe', container.__getattribute__('private_ip')]
-                    statePeer = subprocess.Popen(command)
+                # Check if the container is not the same as the one who execute this script
+                if not re.search(container.__getattribute__('private_ip'), os.environ.get('TUTUM_IP_ADDRESS')):
+                    # Search if the container is in the peer list
+                    peer = re.search(container.__getattribute__('private_ip'), stdout)
+                    # If not we add the peer
+                    if not peer:
+                        command = ['gluster', 'peer', 'probe', container.__getattribute__('private_ip')]
+                        statePeer = subprocess.Popen(command)
 
             # Check if a volume is set
             command = ['gluster', 'volume', 'info']
