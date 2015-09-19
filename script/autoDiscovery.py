@@ -2,6 +2,7 @@ import tutum
 import os
 import subprocess
 import time
+import re
 from time import sleep
 
 command = ['glusterd']
@@ -30,25 +31,22 @@ while True:
         # We can create/update the cluster
         if containers.__len__() > 1:
 
-            # Check if a peer is set
+            # get peers informations
             command = ['gluster', 'peer', 'status']
-            statePeer = subprocess.Popen(command)
+            statePeer = subprocess.Popen(command, stderr=subprocess.STDOUT)
+            # get the peer response with the peers IP
+            out, err = statePeer.communicate()
 
-            # If a peer is set so the cluster is ok
-            if statePeer.wait() == 1:
-                print 'One peer.'
-            else:
-                for container in containers:
+            for container in containers:
+                peer = re.search(container.__getattribute__('private_ip'), out)
+
+                if not peer:
                     command = ['gluster', 'peer', 'probe', container.__getattribute__('private_ip')]
                     statePeer = subprocess.Popen(command)
 
             # Check if a volume is set
             command = ['gluster', 'volume', 'info']
             stateVolume = subprocess.Popen(command)
-
-
-            if stateVolume.wait() == 1:
-                print "plop"
 
     elif services.__len__() > 1:
         print "More than one service found for " + serviceName
