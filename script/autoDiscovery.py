@@ -31,7 +31,7 @@ while True:
         containers = tutum.Container.list(state = 'Running', serviceName = serviceName)
 
         #preset command to create volume
-        commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', containers.__len__(), 'transport', 'tcp']
+        commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', str(containers.__len__()), 'transport', 'tcp']
 
         # If we have more than one container running GlusterFs
         # We can create/update the cluster
