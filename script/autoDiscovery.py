@@ -64,6 +64,7 @@ while True:
             commandCreateVolume.append('force')
             print commandCreateVolume
             createVolume = subprocess.Popen(commandCreateVolume)
+            createVolume = subprocess.Popen(['gluster', 'volume', 'start', 'volume1'])
 
     elif services.__len__() > 1:
         print "More than one service found for " + serviceName
