@@ -1,8 +1,10 @@
-import tutum
 import os
+import re
 import subprocess
 import time
-import re
+import tutum
+import unicodedata
+
 from time import sleep
 
 command = ['glusterd']
@@ -44,7 +46,7 @@ while True:
             for container in containers:
 
                 # Add container for volume creation
-                commandCreateVolume.append(container.__getattribute__('private_ip') + ':/data')
+                commandCreateVolume.append(container.__getattribute__('private_ip').encode('ascii') + ':/data')
 
                 # Check if the container is not the same as the one who execute this script
                 if not re.search(container.__getattribute__('private_ip'), os.environ.get('TUTUM_IP_ADDRESS')):
@@ -60,7 +62,6 @@ while True:
             stateVolume = subprocess.Popen(command)
 
             commandCreateVolume.append('force')
-            print commandCreateVolume
             createVolume = subprocess.Popen(commandCreateVolume)
 
     elif services.__len__() > 1:
