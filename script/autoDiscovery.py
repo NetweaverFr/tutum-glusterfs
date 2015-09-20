@@ -46,7 +46,7 @@ while True:
             for container in containers:
 
                 # Add container for volume creation
-                commandCreateVolume.append(container.__getattribute__('private_ip').encode('ascii') + ':/data')
+                commandCreateVolume.append(str(container.__getattribute__('private_ip')) + ':/data')
 
                 # Check if the container is not the same as the one who execute this script
                 if not re.search(container.__getattribute__('private_ip'), os.environ.get('TUTUM_IP_ADDRESS')):
