@@ -60,6 +60,7 @@ while True:
             stateVolume = subprocess.Popen(command)
 
             commandCreateVolume.append('force')
+            print commandCreateVolume
             createVolume = subprocess.Popen(commandCreateVolume)
 
     elif services.__len__() > 1:
