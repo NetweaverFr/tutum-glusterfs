@@ -71,7 +71,7 @@ class autoDiscovery(object):
                 # We can create/update the cluster
                 if self.containersRunning > 1:
 
-                    print containers.__len__() + ' Containers currently running'
+                    print str(containers.__len__()) + ' Containers currently running'
                     print containers
                     #preset command to create volume
                     #self.commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', self.containersRunning, 'transport', 'tcp']
