@@ -55,10 +55,11 @@ class autoDiscovery(object):
         services = tutum.Service.list(state = 'Running', name = self.serviceName)
         self.serviceRunning = services.__len__();
 
-        # Check if we have only one service
-        if self.serviceRunning == 1:
-            print self.serviceName + " found."
-            while True:
+        while True:
+            # Check if we have only one service
+            if self.serviceRunning == 1:
+                print self.serviceName + " found."
+
                 # Get container list
                 containers = tutum.Container.list(state = 'Running', serviceName = self.serviceName)
                 self.containersRunning = containers.__len__()
@@ -84,8 +85,7 @@ class autoDiscovery(object):
                 else:
                     print "No service found - " + self.serviceName
 
-                # List all container:
-                sleep(20)
+            sleep(20)
 
 
 adScript = autoDiscovery()
