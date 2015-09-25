@@ -7,20 +7,20 @@ import unicodedata
 
 from time import sleep
 
-class autoDiscovery():
+class autoDiscovery(object):
     """A class that manage auto discovery for Glusterfs/Docker/Tutum cluster."""
 
-    def __init__(volumeDefault = null, daemon = 'glusterd'):
+    def __init__(self, volumeDefault = None, daemon = 'glusterd'):
         # Set variables
-        self.service.name = os.environ.get('TUTUM_SERVICE_HOSTNAME')
-        self.service.running = 0
-        self.containers.running = 0
-        self.volume.default = volumeDefault
-        self.glusterfs.daemon = daemon
+        self.serviceName = os.environ.get('TUTUM_SERVICE_HOSTNAME')
+        self.serviceRunning = 0
+        self.containersRunning = 0
+        self.volumeDefault = volumeDefault
+        self.glusterfsDaemon = daemon
 
         # Set default volume
-        if self.volume.default == null:
-            self.volume.default = os.environ.get('GLUSTERFS_DEFAULT_VOLUME')
+        if self.volumeDefault == None:
+            self.volumeDefault = os.environ.get('GLUSTERFS_DEFAULT_VOLUME')
 
     def peer(self, containers):
         # get peers informations
@@ -29,7 +29,7 @@ class autoDiscovery():
         # get the peer response with the peers IP
         stdout = statePeer.communicate()[0]
         print stdout
-        
+
         # Check each container
         for container in containers:
             # Add container for volume creation
@@ -45,26 +45,26 @@ class autoDiscovery():
 
     def execute(self):
         # Execute Glusterfs Daemon
-        command = [self.glusterfs.daemon]
+        command = [self.glusterfsDaemon]
         subprocess.Popen(command)
 
         # Get the gluster service
-        services = tutum.Service.list(state = 'Running', name = self.service.name)
-        self.service.running = services.__len__();
+        services = tutum.Service.list(state = 'Running', name = self.serviceName)
+        self.serviceRunning = services.__len__();
 
         # Check if we have only one service
-        if self.service.running == 1:
-            print self.service.name + " found."
+        if self.serviceRunning == 1:
+            print self.serviceName + " found."
             while True:
                 # Get container list
-                containers = tutum.Container.list(state = 'Running', serviceName = self.service.name)
-                self.containers.running = containers.__len__()
+                containers = tutum.Container.list(state = 'Running', serviceName = self.serviceName)
+                self.containersRunning = containers.__len__()
                 # If we have more than one container running GlusterFs
                 # We can create/update the cluster
-                if self.containers.running > 1:
+                if self.containersRunning > 1:
 
                     #preset command to create volume
-                    commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', self.containers.running, 'transport', 'tcp']
+                    commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', self.containersRunning, 'transport', 'tcp']
 
                     self.peer(containers)
 
@@ -76,13 +76,13 @@ class autoDiscovery():
                     #createVolume = subprocess.Popen(commandCreateVolume)
                     #createVolume = subprocess.Popen(['gluster', 'volume', 'start', 'volume1'])
 
-            elif services.__len__() > 1:
-                print "More than one service found for " + self.service.name
-            else:
-                print "No service found - " + self.service.name
+                elif services.__len__() > 1:
+                    print "More than one service found for " + self.serviceName
+                else:
+                    print "No service found - " + self.serviceName
 
-            # List all container:
-            sleep(20)
+                # List all container:
+                sleep(20)
 
 
 adScript = autoDiscovery()
