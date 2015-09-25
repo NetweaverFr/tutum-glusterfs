@@ -14,7 +14,8 @@ To have GlusterFs working we based our configuration on some asumptions:
 
 To be able to connect to Tutum API you need to pass to environment variable:
 
-| Environment variable  |  Required  | Comment                                       |
-|-----------------------|------------|-----------------------------------------------|
-| TUTUM_USER            | YES        | Your Tutum username                           |
-| TUTUM_APIKEY          | YES        | Your API Key for tutum API                    |
+| Environment variable     |  Required  | Comment                                       |
+|--------------------------|------------|-----------------------------------------------|
+| TUTUM_USER               | YES        | Your Tutum username                           |
+| TUTUM_APIKEY             | YES        | Your API Key for tutum API                    |
+| GLUSTERFS_DEFAULT_VOLUME | NO         | Your Tutum username                           |
