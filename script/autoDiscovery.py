@@ -10,7 +10,7 @@ from time import sleep
 class autoDiscovery(object):
     """A class that manage auto discovery for Glusterfs/Docker/Tutum cluster."""
 
-    def __init__(self, volumeDefault = None, daemon = 'glusterd'):
+    def __init__(self, volumeDefault = None, daemon ='glusterd'):
         # Set variables
         self.serviceName = os.environ.get('TUTUM_SERVICE_HOSTNAME')
         self.serviceRunning = 0
@@ -20,7 +20,10 @@ class autoDiscovery(object):
 
         # Set default volume
         if self.volumeDefault == None:
-            self.volumeDefault = os.environ.get('GLUSTERFS_DEFAULT_VOLUME')
+            if os.environ.get('GLUSTERFS_DEFAULT_VOLUME'):
+                self.volumeDefault = os.environ.get('GLUSTERFS_DEFAULT_VOLUME')
+            else:
+                self.volumeDefault = "data"
 
     def peer(self, containers):
         # get peers informations
