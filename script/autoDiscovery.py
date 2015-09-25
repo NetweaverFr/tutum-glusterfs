@@ -18,6 +18,7 @@ class autoDiscovery(object):
         self.volumeDefault = volumeDefault
         self.glusterfsDaemon = daemon
         self.commandCreateVolume = []
+        print "Variable setup"
 
         # Set default volume
         if self.volumeDefault == None:
@@ -25,6 +26,8 @@ class autoDiscovery(object):
                 self.volumeDefault = os.environ.get('GLUSTERFS_DEFAULT_VOLUME')
             else:
                 self.volumeDefault = "data"
+
+        print "Default volume path setup (" + self.volumeDefault + ")."
 
     def peer(self, containers):
         # get peers informations
@@ -52,11 +55,11 @@ class autoDiscovery(object):
         command = [self.glusterfsDaemon]
         subprocess.Popen(command)
 
-        # Get the gluster service
-        services = tutum.Service.list(state = 'Running', name = self.serviceName)
-        self.serviceRunning = services.__len__();
-
         while True:
+            # Get the gluster service
+            services = tutum.Service.list(state = 'Running', name = self.serviceName)
+            self.serviceRunning = services.__len__();
+            
             # Check if we have only one service
             if self.serviceRunning == 1:
                 print self.serviceName + " found."
