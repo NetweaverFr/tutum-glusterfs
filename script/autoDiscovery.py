@@ -59,7 +59,7 @@ class autoDiscovery(object):
             # Get the gluster service
             services = tutum.Service.list(state = 'Running', name = self.serviceName)
             self.serviceRunning = services.__len__();
-            
+
             # Check if we have only one service
             if self.serviceRunning == 1:
                 print self.serviceName + " found."
@@ -71,6 +71,8 @@ class autoDiscovery(object):
                 # We can create/update the cluster
                 if self.containersRunning > 1:
 
+                    print containers.__len__() + ' Containers currently running'
+                    print containers
                     #preset command to create volume
                     #self.commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', self.containersRunning, 'transport', 'tcp']
 
