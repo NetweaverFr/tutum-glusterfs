@@ -17,6 +17,7 @@ class autoDiscovery(object):
         self.containersRunning = 0
         self.volumeDefault = volumeDefault
         self.glusterfsDaemon = daemon
+        self.commandCreateVolume = []
 
         # Set default volume
         if self.volumeDefault == None:
@@ -36,7 +37,7 @@ class autoDiscovery(object):
         # Check each container
         for container in containers:
             # Add container for volume creation
-            commandCreateVolume.append(str(container.__getattribute__('private_ip')) + ':' + defaultVolume)
+            #self.commandCreateVolume.append(str(container.__getattribute__('private_ip')) + ':' + defaultVolume)
             # Check if the container is not the same as the one who execute this script
             if not re.search(container.__getattribute__('private_ip'), os.environ.get('TUTUM_IP_ADDRESS')):
                 # Search if the container is in the peer list
@@ -68,7 +69,7 @@ class autoDiscovery(object):
                 if self.containersRunning > 1:
 
                     #preset command to create volume
-                    commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', self.containersRunning, 'transport', 'tcp']
+                    #self.commandCreateVolume = ['gluster', 'volume', 'create', 'volume1', 'replica', self.containersRunning, 'transport', 'tcp']
 
                     self.peer(containers)
 
@@ -76,8 +77,8 @@ class autoDiscovery(object):
                     command = ['gluster', 'volume', 'info']
                     stateVolume = subprocess.Popen(command)
 
-                    #commandCreateVolume.append('force')
-                    #createVolume = subprocess.Popen(commandCreateVolume)
+                    #self.commandCreateVolume.append('force')
+                    #createVolume = subprocess.Popen    self.commandCreateVolume)
                     #createVolume = subprocess.Popen(['gluster', 'volume', 'start', 'volume1'])
 
                 elif services.__len__() > 1:
